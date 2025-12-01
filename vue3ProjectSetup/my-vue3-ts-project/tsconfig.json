@@ -5,6 +5,24 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["pinia", "vue-router/auto", "vue"]
-  }
+    "types": ["pinia", "vue-router/auto", "vue"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node", // 必须为 Node，否则不识别 paths
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    // 1. 基础路径（配合 paths 使用）
+    "baseUrl": ".",
+    // 2. 路径映射：@ 指向 src
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["node_modules"]
 }

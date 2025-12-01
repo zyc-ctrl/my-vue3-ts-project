@@ -43,9 +43,11 @@
   </template>
   
   <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, nextTick} from 'vue';
   import { useChatStore } from '@/stores/chatStore';
   import { streamChat } from '@/utils/aiClient';
+
+  const chatHistoryRef = ref<HTMLDivElement | null>(null);
   
   const chatStore = useChatStore();
   const selectedModel = ref<'dashscope'>('dashscope');
@@ -117,11 +119,20 @@
     } finally {
       chatStore.isStreaming = false;
     }
+    scrollToBottom()
   };
   
   // Shift+Enter 换行
   const handleNewLine = () => {
     chatStore.inputContent += '\n';
+  };
+
+  // 新增：滚动到最新消息
+  const scrollToBottom = async () => {
+    await nextTick();
+    if (chatHistoryRef.value) {
+        chatHistoryRef.value.scrollTop = chatHistoryRef.value.scrollHeight;
+    }
   };
   </script>
   

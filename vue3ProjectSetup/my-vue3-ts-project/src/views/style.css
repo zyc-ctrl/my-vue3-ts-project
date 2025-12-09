@@ -1,156 +1,173 @@
 /* src/style.css */
 /* 全局样式重置 */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  }
-  
-  html, body, #app {
-    height: 100%;
-    background-color: #f5f7fa;
-    color: #333;
-  }
-  
-  /* 通用样式 */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+html, body, #app {
+  height: 100%;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* 核心优化：容器宽度规则（解决窄的关键） */
+.container {
+  width: 100%;
+  /* 大屏下最大宽度放开，充分利用空间 */
+  max-width: 1920px;
+  /* 左右间距自适应，大屏下间距更小 */
+  margin: 0 auto;
+  padding: 0 clamp(10px, 2vw, 24px);
+}
+
+/* 通用按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #409eff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #66b1ff;
+}
+
+.btn-primary:active {
+  background-color: #3399ff;
+}
+
+.btn-danger {
+  background-color: #f56c6c;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #f78989;
+}
+
+.btn-danger:active {
+  background-color: #f45454;
+}
+
+.btn-default {
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #e6e6e6;
+}
+
+.btn-default:hover {
+  border-color: #dcdcdc;
+  color: #333;
+}
+
+/* 通用卡片样式 */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* 通用表单样式 */
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #666;
+}
+
+.form-item input,
+.form-item select,
+.form-item textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-item input:focus,
+.form-item select:focus,
+.form-item textarea:focus {
+  outline: none;
+  border-color: #409eff;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+}
+
+/* 通用表格样式 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.table th,
+.table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.table tr:hover {
+  background-color: #fafafa;
+}
+
+/* 响应式断点优化（适配不同屏幕） */
+/* 小屏（手机） */
+@media (max-width: 768px) {
   .container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 10px;
   }
-  
-  /* 通用按钮样式 */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .btn-primary {
-    background-color: #409eff;
-    color: #fff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #66b1ff;
-  }
-  
-  .btn-primary:active {
-    background-color: #3399ff;
-  }
-  
-  .btn-danger {
-    background-color: #f56c6c;
-    color: #fff;
-  }
-  
-  .btn-danger:hover {
-    background-color: #f78989;
-  }
-  
-  .btn-danger:active {
-    background-color: #f45454;
-  }
-  
-  .btn-default {
-    background-color: #fff;
-    color: #666;
-    border: 1px solid #e6e6e6;
-  }
-  
-  .btn-default:hover {
-    border-color: #dcdcdc;
-    color: #333;
-  }
-  
-  /* 通用卡片样式 */
   .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-    padding: 24px;
-    margin-bottom: 20px;
+    padding: 16px;
   }
-  
-  /* 通用表单样式 */
-  .form-item {
-    margin-bottom: 20px;
-  }
-  
-  .form-item label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #666;
-  }
-  
-  .form-item input,
-  .form-item select,
-  .form-item textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #e6e6e6;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.2s;
-  }
-  
-  .form-item input:focus,
-  .form-item select:focus,
-  .form-item textarea:focus {
-    outline: none;
-    border-color: #409eff;
-    box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
-  }
-  
-  /* 通用表格样式 */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  }
-  
   .table th,
   .table td {
-    padding: 16px;
-    text-align: left;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 8px;
   }
-  
-  .table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: #333;
+}
+
+/* 中屏（平板/笔记本） */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .container {
+    max-width: 1200px;
   }
-  
-  .table tr:hover {
-    background-color: #fafafa;
+}
+
+/* 大屏（桌面） */
+@media (min-width: 1201px) {
+  .container {
+    /* 大屏下几乎无左右间距，充分利用宽度 */
+    padding: 0 clamp(16px, 3vw, 40px);
   }
-  
-  /* 响应式适配 */
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 10px;
-    }
-    
-    .card {
-      padding: 16px;
-    }
-    
-    .table th,
-    .table td {
-      padding: 12px 8px;
-    }
-  }
+}

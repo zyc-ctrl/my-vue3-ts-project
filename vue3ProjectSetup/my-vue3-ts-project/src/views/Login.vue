@@ -1,65 +1,89 @@
 <template>
   <div class="login-page">
-    <div class="login-card">
+    <el-card class="login-card" shadow="hover">
       <div class="login-header">
         <img src="https://picsum.photos/60/60" alt="logo" class="login-logo" />
         <h3 class="login-title">Vue3 权限管理系统</h3>
       </div>
-      <form @submit.prevent="handleLogin" class="login-form">
-        <div class="form-item">
-          <label>用户名</label>
-          <div class="input-wrapper">
-            <span class="input-icon">👤</span>
-            <input
-              v-model="username"
-              type="text"
-              placeholder="请输入用户名（admin/editor/guest）"
-              required
-            />
-          </div>
-        </div>
-        <div class="form-item">
-          <label>密码</label>
-          <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input
-              v-model="password"
-              type="password"
-              placeholder="请输入密码（123456）"
-              required
-            />
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary login-btn" :disabled="loading">
-          {{ loading ? '登录中...' : '登录' }}
-        </button>
-      </form>
+      <el-form 
+        ref="loginFormRef" 
+        :model="loginForm" 
+        :rules="loginRules" 
+        class="login-form"
+        @submit.prevent="handleLogin"
+      >
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            placeholder="请输入用户名（admin/editor/guest）"
+            prefix-icon="User"
+            size="large"
+          />
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            placeholder="请输入密码（123456）"
+            prefix-icon="Lock"
+            size="large"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button 
+            type="primary" 
+            class="login-btn" 
+            size="large"
+            :loading="loading"
+            native-type="submit"
+          >
+            登录
+          </el-button>
+        </el-form-item>
+      </el-form>
       <div class="login-tip">
         <p>测试账号：</p>
         <p>admin/123456（管理员） | editor/123456（编辑） | guest/123456（游客）</p>
       </div>
-    </div>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
+import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
 
-const username = ref('');
-const password = ref('');
 const loading = ref(false);
 const userStore = useUserStore();
 
+// Element Plus 表单相关
+const loginFormRef = ref<FormInstance>();
+const loginForm = ref({
+  username: '',
+  password: '',
+});
+const loginRules = ref<FormRules>({
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+});
+
 // 登录处理
 const handleLogin = async () => {
+  if (!loginFormRef.value) return;
+  
+  // 表单验证
+  const valid = await loginFormRef.value.validate();
+  if (!valid) return;
+
   try {
     loading.value = true;
-    await userStore.login(username.value, password.value);
-    alert('登录成功！');
+    await userStore.login(loginForm.value.username, loginForm.value.password);
+    ElMessage.success('登录成功！'); // 直接使用 Element Plus 消息提示
   } catch (error) {
     const errMsg = (error as Error).message;
-    alert(errMsg);
+    ElMessage.error(errMsg);
   } finally {
     loading.value = false;
   }
@@ -79,7 +103,6 @@ const handleLogin = async () => {
 .login-card {
   width: 100%;
   max-width: 420px;
-  background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   padding: 40px;
@@ -108,24 +131,6 @@ const handleLogin = async () => {
   margin-bottom: 24px;
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 12px;
-  font-size: 16px;
-  color: #999;
-  z-index: 1;
-}
-
-.input-wrapper input {
-  padding-left: 40px !important;
-}
-
 .login-btn {
   width: 100%;
   height: 44px;
@@ -144,7 +149,6 @@ const handleLogin = async () => {
   margin: 0 0 4px 0;
 }
 
-/* 响应式适配 */
 @media (max-width: 480px) {
   .login-card {
     padding: 24px;

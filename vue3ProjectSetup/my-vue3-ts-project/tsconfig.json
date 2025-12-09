@@ -5,7 +5,7 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["pinia", "vue-router/auto", "vue"],
+    "types": ["pinia", "vue-router/auto", "vue","element-plus/global"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node", // 必须为 Node，否则不识别 paths
@@ -21,7 +21,7 @@
     // 2. 路径映射：@ 指向 src
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules"]

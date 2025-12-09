@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "@icon-park/vue-next": "^1.4.2",
     "element-plus": "^2.11.9",
     "pinia": "^3.0.4",
